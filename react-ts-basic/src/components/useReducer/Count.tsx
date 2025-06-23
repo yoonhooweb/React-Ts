@@ -2,12 +2,16 @@ import { useReducer } from "react";
 
 type Action = 
  | {type : 'plus'}
- | 
+ | {type : 'minus'}
+ | {type : 'reset'}
+ | {type : 'payload'; payload : number}
+
+;
 
 export default function Count() {
     const countPlus = (
         count: number,
-        action: actionType,
+        action: Action,
     ) => {
         switch (action.type) {
             case "plus":
@@ -28,9 +32,7 @@ export default function Count() {
     return (
         <>
             <h1>{count}</h1>
-            <button onClick={() => dispatch({ type: "plus"})}>
-                증가
-            </button>
+            <button onClick={() => dispatch({ type: "plus"})}>증가</button>
             <button onClick={() => dispatch({ type: "minus" })}>감소</button>
             <button onClick={() => dispatch({ type: "reset" })}>초기화</button>
             <button onClick={() => dispatch({ type: "payload" , payload: 20 } )}>20으로변경</button>
