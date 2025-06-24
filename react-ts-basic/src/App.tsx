@@ -6,6 +6,7 @@ import Button from "./components/Button";
 import CountDisplay from "./components/count/CountDisplay";
 import { useState } from "react";
 import Count from "./components/useReducer/Count";
+import CountingPage from "./components/useReducer/CountingPage";
 
 export default function App() {
     const handleClick2 = (event : React.MouseEvent<HTMLButtonElement, MouseEvent>) => console.log(event)
@@ -67,6 +68,9 @@ export default function App() {
 
             <CountDisplay />
             <Count />
+
+            <CountingPage />
+
         </>
     );
 }
