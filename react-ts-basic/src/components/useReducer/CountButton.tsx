@@ -1,6 +1,8 @@
 import { type ActionDispatch } from 'react'
 
-export default function CountButton( { countDispatch } : { countDispatch: ActionDispatch<[action: { type: string; }]> }) {
+type Action = | {type : 'plus'} | {type : 'minus'} | {type : 'reset'}
+
+export default function CountButton( { countDispatch } : { countDispatch: ActionDispatch<[action: Action]> }) {
   return (
     <div>
         <button onClick={ () => countDispatch({ type : "plus" })}>증가</button>
