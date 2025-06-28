@@ -4,14 +4,21 @@ import Footer from "./components/Footer";
 import Spread from "./components/Spread";
 import Button from "./components/Button";
 import CountDisplay from "./components/count/CountDisplay";
-import { use, useState } from "react";
+import { useState } from "react";
 import Count from "./components/useReducer/Count";
 import CountingPage from "./components/useReducer/CountingPage";
 import LoginLayout from "./components/misson/LoginLayout";
 import LogoutLayout from "./components/misson/LogoutLayout";
 import SwitchComponent from "./components/switchRender/SwitchComponent";
 import Notification from "./components/andRender/Notification";
+import RecipeList from "./components/recipeList/RecipeList";
+import styled from "styled-components";
+import Tailwind from "./components/tailwind/Tailwind";
 
+const Title = styled.h1<{$color : string}>`
+    color : ${ (props) => props.$color};
+    text-decoration : underline;
+`;
 
 export default function App() {
     /* const handleClick2 = (event : React.MouseEvent<HTMLButtonElement, MouseEvent>) => console.log(event)
@@ -69,15 +76,29 @@ export default function App() {
         }
     } */
 
-        const [item, setItem] = useState(["사과", "바나나", "오렌지"]);
-        const [isAdd, setIsAdd] = useState(false);
+    const [item, setItem] = useState(["사과", "바나나", "오렌지"]);
+    const [data, setData] = useState([
+        {id : 1, name : "qwe"},
+        {id : 2, name : "ert"},
+        {id : 3, name : "asd"},
+        {id : 4, name : "fggre"}
+    ])
 
-        const handleItem = () => {
-            let newArray = [...item]
-            newArray.push("포도");
-            setItem(newArray);
-            setIsAdd(true)
-        }
+    const handleDelete = (id : number) => {
+        return setData(
+            data.filter( (list) => list.id !== id)
+        )
+    }
+
+    const [isAdd, setIsAdd] = useState(false);
+
+    const handleItem = () => {
+        const newArray = [...item];
+        newArray.push("포도");
+        setItem(newArray);
+        setIsAdd(true);
+    };
+
 
 
     return (
@@ -111,18 +132,24 @@ export default function App() {
 
              <SwitchComponent light = {light} handleLight = { handleLight }/> */}
 
-             <Notification />
-             <ul>
-                {
-                    item.map (( v:string , i:number ) => {
-                        return <li>{v}</li>
-                    }) 
-                }
-             </ul>
+            <Notification />
+            <ul>
+                {data.map((v) => {
+                    return (
+                        <li key={v.id}>{v.name}
+                            <button onClick={() => handleDelete(v.id)}>delete</button>
+                        </li>
+                    );
+                })}
+            </ul>
 
-             <button onClick={handleItem} disabled= {isAdd}>포도추가</button>
+            <button onClick={handleItem} disabled={isAdd}>
+                포도추가
+            </button>
+
+            <RecipeList />
+            <Title $color = 'red'>하이하이</Title>
+            <Tailwind/>
         </>
     );
 }
-
-

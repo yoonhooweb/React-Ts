@@ -3,7 +3,6 @@ import { useState } from "react"
 function Notification() {
     const [showNotification, setShowNotification] = useState(true);
     const handleShowBtn = (isShow : boolean) =>  {
-        console.log(isShow);
         setShowNotification(isShow);
     }
 
