@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+@layer components {
+  .btn-basic {
+    @apply bg-white border-2 border-neutral-700 cursor-pointer text-lg hover:shadow-[1px_1px_2px_#333] text-center;
+  }
+}
