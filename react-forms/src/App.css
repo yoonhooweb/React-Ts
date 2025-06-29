@@ -1,0 +1,122 @@
+/* Block: user-info */
+.user-info {
+  max-width: 390px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Title for the form */
+.user-info__title {
+  text-align: center;
+  font-family: "Arial", sans-serif;
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+/* Form styles */
+.user-info__form {
+  width: 100%;
+}
+
+/* Form group (element) styles for inputs and labels */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group__label {
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.form-group__input,
+.form-group__textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.form-group__textarea {
+  height: 100px;
+}
+.form-group__input:focus,
+.form-group__textarea:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Radio button and checkbox specific styles */
+.form-group--radio .form-group__radio,
+.form-group--checkbox .form-group__checkbox {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.form-group__input[type="radio"],
+.form-group__input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+/* Submit button styles */
+.user-info__submit {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.user-info__submit:hover {
+  background-color: #0056b3;
+}
+
+/* Preview section styles */
+.preview {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.preview__title {
+  text-align: center;
+  font-family: "Arial", sans-serif;
+  font-size: 20px;
+  color: #333;
+}
+
+.preview__item {
+  font-size: 16px;
+  color: #555;
+  text-align: left;
+  margin-bottom: 5px;
+}
+
+/* Responsive Styles for Mobile */
+@media (max-width: 768px) {
+  .user-info {
+    padding: 15px;
+  }
+
+  .user-info__title {
+    font-size: 18px;
+  }
+
+  .user-info__submit {
+    font-size: 14px;
+  }
+}
