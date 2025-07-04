@@ -2,6 +2,7 @@
 import Input from "./components/controlled/Input";
 import Radio from "./components/controlled/Radio";
 import Textarea from "./components/controlled/Textarea"; */
+import UseRefStyle from "./components/controlled/UseRefStyle";
 import UserInfo from "./components/controlled/UserInfo";
 
 function App() {
@@ -10,8 +11,10 @@ function App() {
             {/* <Input />
             <Checkbox />
             <Radio />
-            <Textarea /> */}
+            <Textarea /> 
             <UserInfo />
+            */}
+            <UseRefStyle />
         </div>
     );
 }
