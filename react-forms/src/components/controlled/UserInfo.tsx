@@ -1,20 +1,19 @@
 import { useState } from "react";
 
 export default function UserInfo() {
-
-	const [name, setName] = useState ("");
-	const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setName(e.target.value)
-	}
-	const [email, setEmail] = useState ("");
-	const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setEmail(e.target.value)
-	}
-	const [gender, setGender] = useState ("");
-	const handleGender = (e:React.ChangeEvent<HTMLInputElement>) => {
-		setGender(e.target.value)
-	}
-	const [skills, setSkills] = useState ({
+    const [name, setName] = useState("");
+    const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setName(e.target.value);
+    };
+    const [email, setEmail] = useState("");
+    const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(e.target.value);
+    };
+    const [gender, setGender] = useState("");
+    const handleGender = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setGender(e.target.value);
+    };
+    /* const [skills, setSkills] = useState ({
 		javascript : false,
 		react :false,
 		nodejs : false
@@ -24,11 +23,23 @@ export default function UserInfo() {
 			...prev,
 			[e.target.name] : e.target.checked
 		}));
-	}
+	} */
 
-	const [text, setText] = useState("");
-	const handleText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-		setText(e.target.value)
+    const [skills, setSkills] = useState<string[]>("");
+
+    const handleSkills = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setSkills((prev) => e.target.checked ? [...prev, value] : skills.filter( (skill) => skill !== value) );
+    };
+
+    const [text, setText] = useState("");
+    const handleText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setText(e.target.value);
+    };
+
+	const handleFormSubmit = (e :React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		e.preventDefault();
+		console.log("폼 제출 :" , {name, email, gender, skills, text})
 	}
 
     return (
@@ -42,10 +53,10 @@ export default function UserInfo() {
                     <input
                         className="form-group__input"
                         type="text"
-						name="name"
+                        name="name"
                         id="name"
-						onChange={handleName}
-						value={name}
+                        onChange={handleName}
+                        value={name}
                     />
                 </div>
 
@@ -56,21 +67,35 @@ export default function UserInfo() {
                     <input
                         className="form-group__input"
                         type="email"
-						name="email"
+                        name="email"
                         id="email"
-						onChange={handleEmail}
-						value={email}
+                        onChange={handleEmail}
+                        value={email}
                     />
                 </div>
 
                 <div className="form-group form-group--radio">
                     <label className="form-group__label">성별:</label>
                     <label className="form-group__radio">
-                        <input type="radio" id="male" value="남성" name="gender" onChange={handleGender} checked={gender === "남성"}/>
+                        <input
+                            type="radio"
+                            id="male"
+                            value="남성"
+                            name="gender"
+                            onChange={handleGender}
+                            checked={gender === "남성"}
+                        />
                         남성
                     </label>
                     <label className="form-group__radio">
-                        <input type="radio" id="female" value="여성" name="gender" onChange={handleGender} checked={gender === "여성"}/>
+                        <input
+                            type="radio"
+                            id="female"
+                            value="여성"
+                            name="gender"
+                            onChange={handleGender}
+                            checked={gender === "여성"}
+                        />
                         여성
                     </label>
                 </div>
@@ -78,15 +103,30 @@ export default function UserInfo() {
                 <div className="form-group form-group--checkbox">
                     <label className="form-group__label">기술 관심:</label>
                     <label className="form-group__checkbox">
-                        <input type="checkbox" value="JavaScript" name="javascript" onChange={ handleSkills} />
+                        <input
+                            type="checkbox"
+                            value="JavaScript"
+                            name="javascript"
+                            onChange={handleSkills}
+                        />
                         JavaScript
                     </label>
                     <label className="form-group__checkbox">
-                        <input type="checkbox" value="React" name="react" onChange={ handleSkills} />
+                        <input
+                            type="checkbox"
+                            value="React"
+                            name="react"
+                            onChange={handleSkills}
+                        />
                         React
                     </label>
                     <label className="form-group__checkbox">
-                        <input type="checkbox" value="Node.js" name="nodejs" onChange={ handleSkills} />
+                        <input
+                            type="checkbox"
+                            value="Node.js"
+                            name="nodejs"
+                            onChange={handleSkills}
+                        />
                         Node.js
                     </label>
                 </div>
@@ -98,13 +138,13 @@ export default function UserInfo() {
                     <textarea
                         className="form-group__textarea"
                         id="bio"
-						name="bio"
+                        name="bio"
                         placeholder="자기소개를 작성해주세요"
-						onChange={e => handleText(e)}
+                        onChange={(e) => handleText(e)}
                     ></textarea>
                 </div>
 
-                <button className="user-info__submit" type="submit">
+                <button className="user-info__submit" type="submit" onClick={handleFormSubmit}>
                     제출
                 </button>
             </form>
@@ -114,11 +154,13 @@ export default function UserInfo() {
                 <p className="preview__item">이름: {name}</p>
                 <p className="preview__item">이메일: {email}</p>
                 <p className="preview__item">성별: {gender}</p>
-                <p className="preview__item">기술 관심: 
-					{skills.javascript ? "JavaScript ," : null}
-					{skills.react ? "react ," : null}
-					{skills.nodejs ? "nodejs" : null}
-				</p>
+                <p className="preview__item">
+                    기술 관심:
+                    {/* {skills.javascript ? "JavaScript ," : null}
+                    {skills.react ? "react ," : null}
+                    {skills.nodejs ? "nodejs" : null} */}
+					{skills}
+                </p>
                 <p className="preview__item">자기소개: {text}</p>
             </div>
         </div>
