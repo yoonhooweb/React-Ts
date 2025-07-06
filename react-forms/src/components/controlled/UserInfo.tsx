@@ -1,7 +1,14 @@
 import { useState } from "react";
+import UseInput from "../hook/UseInput";
 
 export default function UserInfo() {
-    const [name, setName] = useState("");
+    //커스텀 훅 버전
+    const { value: name, handleValue: handleName } = UseInput("");
+    const { value: email, handleValue: handleEmail } = UseInput("");
+    const { value: gender, handleValue: handleGender } = UseInput("");
+
+    //일반 사용
+    /* const [name, setName] = useState("");
     const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
         setName(e.target.value);
     };
@@ -12,7 +19,7 @@ export default function UserInfo() {
     const [gender, setGender] = useState("");
     const handleGender = (e: React.ChangeEvent<HTMLInputElement>) => {
         setGender(e.target.value);
-    };
+    }; */
     /* const [skills, setSkills] = useState ({
 		javascript : false,
 		react :false,
@@ -25,11 +32,15 @@ export default function UserInfo() {
 		}));
 	} */
 
-    const [skills, setSkills] = useState<string[]>("");
+    const [skills, setSkills] = useState<string[]>([]);
 
     const handleSkills = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        setSkills((prev) => e.target.checked ? [...prev, value] : skills.filter( (skill) => skill !== value) );
+        setSkills((prev) =>
+            e.target.checked
+                ? [...prev, value]
+                : skills.filter((skill) => skill !== value)
+        );
     };
 
     const [text, setText] = useState("");
@@ -37,10 +48,12 @@ export default function UserInfo() {
         setText(e.target.value);
     };
 
-	const handleFormSubmit = (e :React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-		e.preventDefault();
-		console.log("폼 제출 :" , {name, email, gender, skills, text})
-	}
+    const handleFormSubmit = (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+        e.preventDefault();
+        console.log("폼 제출 :", { name, email, gender, skills, text });
+    };
 
     return (
         <div className="user-info">
@@ -144,7 +157,11 @@ export default function UserInfo() {
                     ></textarea>
                 </div>
 
-                <button className="user-info__submit" type="submit" onClick={handleFormSubmit}>
+                <button
+                    className="user-info__submit"
+                    type="submit"
+                    onClick={handleFormSubmit}
+                >
                     제출
                 </button>
             </form>
@@ -159,7 +176,7 @@ export default function UserInfo() {
                     {/* {skills.javascript ? "JavaScript ," : null}
                     {skills.react ? "react ," : null}
                     {skills.nodejs ? "nodejs" : null} */}
-					{skills}
+                    {skills}
                 </p>
                 <p className="preview__item">자기소개: {text}</p>
             </div>
