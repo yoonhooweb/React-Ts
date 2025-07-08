@@ -3,16 +3,13 @@ import ButtonList from "./ButtonList";
 import { initalData, performCalculation } from "../utils/calculatorUtils";
 
 export default function Calculator() {
-    const [calculatorState, setCalculatorState] =
-        useState<calculatorType>(initalData);
+    const [calculatorState, setCalculatorState] = useState<calculatorType>(initalData);
 
     const handleClear = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
         e.preventDefault();
         setCalculatorState(initalData);
     };
-    const handleOperlator = (
-        e: React.MouseEvent<HTMLInputElement, MouseEvent>
-    ) => {
+    const handleOperlator = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
         const operator = e.currentTarget.value;
         setCalculatorState((calculatorState) => {
             const current = parseFloat(calculatorState.currentNumber);
@@ -20,11 +17,7 @@ export default function Calculator() {
                 return calculatorState;
             } else if (calculatorState.preNumber && calculatorState.operation) {
                 const prev = parseFloat(calculatorState.preNumber);
-                const result = performCalculation(
-                    prev,
-                    current,
-                    calculatorState.operation
-                );
+                const result = performCalculation(prev, current, calculatorState.operation);
                 return operator === "="
                     ? {
                           currentNumber: result.toString(),
@@ -38,8 +31,7 @@ export default function Calculator() {
                           operation: operator,
                           isNewNumber: true,
                       };
-            } else if (operator === "=")
-                return { ...calculatorState, isNewNumber: true };
+            } else if (operator === "=") return { ...calculatorState, isNewNumber: true };
             else
                 return {
                     currentNumber: "",
@@ -53,9 +45,7 @@ export default function Calculator() {
         const value = e.currentTarget.value;
         setCalculatorState((prev) => ({
             ...prev,
-            currentNumber: prev.isNewNumber
-                ? value
-                : prev.currentNumber + value,
+            currentNumber: prev.isNewNumber ? value : prev.currentNumber + value,
             isNewNumber: false,
         }));
     };
@@ -121,28 +111,18 @@ export default function Calculator() {
     ];
 
     return (
-        <div className="flex justify-center items-center h-screen bg-neutral-900">
-            <article className="w-[282px] border border-neutral-700 bg-neutral-300 p-1">
-                <form
-                    name="forms"
-                    className="grid grid-cols-4 auto-rows-[65px] gap-1"
-                >
+        <div className='flex justify-center items-center h-screen bg-neutral-900'>
+            <article className='w-[282px] border border-neutral-700 bg-neutral-300 p-1'>
+                <form name='forms' className='grid grid-cols-4 auto-rows-[65px] gap-1'>
                     <input
-                        type="text"
-                        name="output"
+                        type='text'
+                        name='output'
                         readOnly
-                        className="col-span-4 text-right px-2 border-2 bg-white border-neutral-700 text-lg"
+                        className='col-span-4 text-right px-2 border-2 bg-white border-neutral-700 text-lg'
                         value={calculatorState.currentNumber}
                     />
                     {buttonConfigs.map((button) => {
-                        return (
-                            <ButtonList
-                                key={button.value}
-                                value={button.value}
-                                className={button.className}
-                                onClick={button.onClick}
-                            />
-                        );
+                        return <ButtonList key={button.value} value={button.value} className={button.className} onClick={button.onClick} />;
                     })}
                 </form>
             </article>

@@ -3,7 +3,7 @@ import TodoListEmpty from "./TodoListEmpty";
 
 function TodoList() {
     return (
-        <ul className="todo__list">
+        <ul className='todo__list'>
             {/* <!-- 할 일 목록이 없을 때 --> */}
             <TodoListEmpty />
             {/* <!-- 할 일 목록이 있을 때 -->*/}
