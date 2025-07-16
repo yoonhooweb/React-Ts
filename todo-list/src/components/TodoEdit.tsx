@@ -1,26 +1,13 @@
 import Input from "./html/Input";
 import Button from "./html/Button";
-import { useState } from "react";
 
 /* 글등록 하는곳 */
-function TodoEdit({ addTodo }: { addTodo: (text: string) => void }) {
-    const [text, setText] = useState("");
-
-    const handleDataForm = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (text.trim() === "") {
-            alert("글자를 등록할수 없습니다.");
-            return;
-        }
-        addTodo(text);
-        setText("");
-    };
-
+function TodoEdit() {
     return (
         <>
-            <form className='todo__form' onSubmit={handleDataForm}>
+            <form className='todo__form'>
                 <div className='todo__editor'>
-                    <Input type='text' className='todo__input' placeholder='Enter Todo List' value={text} onChange={(e) => setText(e.target.value)} />
+                    <Input type='text' className='todo__input' placeholder='Enter Todo List' />
                     <Button className='todo__button' type='submit'>
                         Add
                     </Button>
