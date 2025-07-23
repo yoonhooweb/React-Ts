@@ -1,5 +1,5 @@
 type todoType = {
-    id: number,
-    data: string,
-    completed: boolean
-}
+    id: number;
+    title: string;
+    completed: boolean;
+};

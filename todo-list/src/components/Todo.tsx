@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TodoEdit from "./TodoEdit";
 import TodoHeader from "./TodoHeader";
 import TodoList from "./TodoList";
+import { addTodo, deleteTodo, fetchTodos, handleModifyApi } from "../todo";
 
 /* 최상단 부모컴포넌트에서 데이터 관리 */
 function Todo() {
     const [todoList, setTodoList] = useState<todoType[]>([]);
 
-    const handleTodoData = (data: string) => {
+    /* const handleTodoData = (data: string) => {
         setTodoList((prev) => [
             ...prev,
             {
@@ -26,12 +27,43 @@ function Todo() {
         setTodoList((prev) => prev.filter((todo) => todo.id !== id));
     };
 
-    const handleModify = (id: number, data: string) => {
-        setTodoList((prev) => prev.map((todo) => (todo.id === id ? { ...todo, data: data } : todo)));
-    };
-
     const deleteCheckedTodos = () => {
         setTodoList((prev) => prev.filter((todo) => !todo.completed));
+    };
+
+    const handleModify = (id: number, data: string) => {
+        setTodoList((prev) => prev.map((todo) => (todo.id === id ? { ...todo, data: data } : todo)));
+    }; */
+
+    useEffect(() => {
+        fetchTodos().then(setTodoList);
+    }, []);
+
+    // 2. 할 일 추가
+    const handleTodoData = async (title: string) => {
+        const newTodo = await addTodo(title);
+        setTodoList((prev) => [...prev, newTodo]);
+    };
+
+    // 3. 할 일 체크/수정/삭제 등 서버와 동기화
+    const toggleChecked = async (id: number) => {
+        // 서버에 PATCH 요청 필요 (아직 구현 안됨)
+        setTodoList((prev) => prev.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo)));
+    };
+
+    const dataDelete = async (id: number) => {
+        await deleteTodo(id);
+        setTodoList((prev) => prev.filter((todo) => todo.id !== id));
+    };
+
+    const deleteCheckedTodos = async () => {
+        // 반복적으로 서버에 삭제 요청 필요 (아직 구현 안됨)
+        setTodoList((prev) => prev.filter((todo) => !todo.completed));
+    };
+
+    const handleModify = async (id: number, title: string) => {
+        const updated = await handleModifyApi(id, title);
+        setTodoList((prev) => prev.map((todo) => (todo.id === id ? updated : todo)));
     };
 
     return (
