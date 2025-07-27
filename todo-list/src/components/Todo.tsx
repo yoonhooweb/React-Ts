@@ -1,41 +1,52 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import TodoEdit from "./TodoEdit";
 import TodoHeader from "./TodoHeader";
 import TodoList from "./TodoList";
-import { addTodo, deleteTodo, fetchTodos, handleModifyApi } from "../todo";
+/* import { addTodo, deleteTodo, fetchTodos, handleModifyApi } from "../todo"; */
 
 /* 최상단 부모컴포넌트에서 데이터 관리 */
 function Todo() {
-    const [todoList, setTodoList] = useState<todoType[]>([]);
+    /* const [todoList, setTodoList] = useState<todoType[]>([]); */
+    const [todoList, setTodoList] = useState<todoType[]>(JSON.parse(localStorage.getItem("todoList") || "[]"));
 
-    /* const handleTodoData = (data: string) => {
+    const handleTodoData = (data: string) => {
         setTodoList((prev) => [
             ...prev,
             {
                 id: Date.now(),
-                data: data,
+                title: data,
                 completed: false,
             },
         ]);
     };
 
-    const toggleChecked = (id: number) => {
+    const toggleChecked = useCallback((id: number) => {
         setTodoList(todoList.map((prev) => (prev.id === id ? { ...prev, completed: !prev.completed } : prev)));
-    };
+    }, []);
 
-    const dataDelete = (id: number) => {
+    const dataDelete = useCallback((id: number) => {
         setTodoList((prev) => prev.filter((todo) => todo.id !== id));
-    };
+    }, []);
 
-    const deleteCheckedTodos = () => {
+    const deleteCheckedTodos = useCallback(() => {
         setTodoList((prev) => prev.filter((todo) => !todo.completed));
-    };
+    }, []);
 
-    const handleModify = (id: number, data: string) => {
+    const handleModify = useCallback((id: number, data: string) => {
         setTodoList((prev) => prev.map((todo) => (todo.id === id ? { ...todo, data: data } : todo)));
-    }; */
+    }, []);
 
     useEffect(() => {
+        localStorage.setItem("todoList", JSON.stringify(todoList));
+        return () => {};
+    }, [todoList]);
+
+    useEffect(() => {
+        const randomText = Array.from({ length: 10 }, (_, index) => `todo#${index + 1}`);
+        randomText.forEach((text) => console.log(text));
+    }, []);
+
+    /* useEffect(() => {
         fetchTodos().then(setTodoList);
     }, []);
 
@@ -64,7 +75,7 @@ function Todo() {
     const handleModify = async (id: number, title: string) => {
         const updated = await handleModifyApi(id, title);
         setTodoList((prev) => prev.map((todo) => (todo.id === id ? updated : todo)));
-    };
+    }; */
 
     return (
         <>
