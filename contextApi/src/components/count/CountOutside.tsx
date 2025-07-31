@@ -1,4 +1,4 @@
-import { useCounter } from "../context/counter/useCounter";
+import { useCounter } from "../../context/counter/useCounter";
 
 export default function CountOutside() {
     const { count } = useCounter();

@@ -1,4 +1,4 @@
-import { useCounter } from "../context/counter/useCounter";
+import { useCounter } from "../../context/counter/useCounter";
 
 export default function CountDisplay() {
     const { count } = useCounter();
