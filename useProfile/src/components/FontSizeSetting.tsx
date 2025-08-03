@@ -1,6 +1,11 @@
 import { Type } from "lucide-react";
+import { useSetting, useSettingAction } from "../context/setting/useSetting";
+import { twMerge } from "tailwind-merge";
 
 export default function FontSizeSetting() {
+    const { preferences } = useSetting();
+    const { updateFontSize } = useSettingAction();
+
     return (
         <>
             <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
@@ -9,21 +14,26 @@ export default function FontSizeSetting() {
                     <h2 className="text-lg font-semibold text-gray-900 dark:text-white">글자 크기</h2>
                 </div>
                 <div className="grid grid-cols-3 gap-3">
+                    {(["small", "medium", "large"]).map((size) => (
+                        <button
+                            key={size}
+                            onClick={() => updateFontSize(size)}
+                            className={twMerge(
+                                "px-4 py-2 rounded-lg text-sm font-medium transition-colors",
+                                preferences.fontSize === size
+                                    ? "bg-blue-500 text-white"
+                                    : " bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                            )}
+                        >
+                            {size === "small" ? "작게" : size === "medium" ? "보통" : "크게"}
+                        </button>
+                    ))}
                     {/* On: bg-blue-500 text-white */}
                     {/* Off: bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 */}
-                    <button className="px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600">
-                        작게
-                    </button>
                     {/* On: bg-blue-500 text-white */}
                     {/* Off: bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 */}
-                    <button className="px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600">
-                        보통
-                    </button>
                     {/* On: bg-blue-500 text-white */}
                     {/* Off: bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 */}
-                    <button className="px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600">
-                        크게
-                    </button>
                 </div>
             </div>
         </>

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { SettingContenxt, SettingContenxtAction } from "./SettingContext";
 
 const defaultValue: UserPreferences = {
@@ -30,6 +30,27 @@ function SettingProvider({ children }: { children: React.ReactNode }) {
     };
 
     const memoiztion = useMemo(() => ({ updateLanguage, updateColor, updateNoti, updateFontSize }), []);
+
+    useEffect(() => {
+        document.documentElement.style.fontSize =
+            {
+                small: "14px",
+                medium: "16px",
+                large: "18px",
+            }[preferences.fontSize] ?? "16px";
+
+        if (preferences.color === "system") {
+            document.documentElement.classList.remove("light", "dark");
+            if (window.matchMedia("(prefers-color-scheme : dark)").matches) {
+                document.documentElement.classList.add("dark");
+            } else {
+                document.documentElement.classList.add("light");
+            }
+        } else {
+            document.documentElement.classList.remove("light", "dark");
+            document.documentElement.classList.add(preferences.color);
+        }
+    }, [preferences]);
 
     return (
         <>

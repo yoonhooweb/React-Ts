@@ -1,6 +1,6 @@
 interface UserPreferences {
     language: "ko" | "en" | "ja";
-    fontSize: "samll" | "medium" | "large";
+    fontSize: "small" | "medium" | "large";
     noti: {
         email: boolean;
         push: boolean;
@@ -17,5 +17,5 @@ interface PreferencesContextActionType {
     updateLanguage: (language: UserPreferences["language"]) => void;
     updateFontSize: (size: UserPreferences["fontSize"]) => void;
     updateNoti: (key: keyof UserPreferences["noti"], value: boolean) => void;
-    updateColor: (scheme: UserPreferences["color"]) => void;
+    updateColor: (theme: UserPreferences["color"]) => void;
 }
