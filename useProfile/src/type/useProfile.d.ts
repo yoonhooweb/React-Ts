@@ -19,3 +19,6 @@ interface PreferencesContextActionType {
     updateNoti: (key: keyof UserPreferences["noti"], value: boolean) => void;
     updateColor: (theme: UserPreferences["color"]) => void;
 }
+
+
+

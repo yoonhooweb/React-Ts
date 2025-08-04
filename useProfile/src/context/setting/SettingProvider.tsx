@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useLayoutEffect, useMemo, useState } from "react";
 import { SettingContenxt, SettingContenxtAction } from "./SettingContext";
 
 const defaultValue: UserPreferences = {
@@ -13,7 +13,11 @@ const defaultValue: UserPreferences = {
 };
 
 function SettingProvider({ children }: { children: React.ReactNode }) {
-    const [preferences, setPreferences] = useState<UserPreferences>(defaultValue);
+    const [preferences, setPreferences] = useState<UserPreferences>(() => {
+        /* 로직을 만들어서 값을 지정하는 경우에는 함수값으로 useState의 값으로 지정하는게 편하다  */
+        const save = localStorage.getItem("preferences");
+        return save ? JSON.parse(save) : defaultValue;
+    });
 
     const updateLanguage = (language: UserPreferences["language"]) => {
         setPreferences((prev) => ({ ...prev, language }));
@@ -31,7 +35,15 @@ function SettingProvider({ children }: { children: React.ReactNode }) {
 
     const memoiztion = useMemo(() => ({ updateLanguage, updateColor, updateNoti, updateFontSize }), []);
 
-    useEffect(() => {
+    /* 
+        useLayoutEffect : 콤포넌트가 렌더링이 되기전에 실행됨
+        useEffect : 렌더링이 된 후 실행
+    */
+
+    /* useEffect(() => { */
+    useLayoutEffect(() => {
+        localStorage.setItem("preferences", JSON.stringify(preferences));
+
         document.documentElement.style.fontSize =
             {
                 small: "14px",
