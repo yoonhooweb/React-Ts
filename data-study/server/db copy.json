@@ -2,8 +2,8 @@
   "posts": [
     {
       "id": 1,
-      "title": "a modifyPATCH title",
-      "views": 155
+      "title": "Post #1",
+      "views": 436
     },
     {
       "id": 2,
@@ -11,9 +11,9 @@
       "views": 972
     },
     {
-      "title": "a modify title",
-      "views": 155,
-      "id": 3
+      "id": 3,
+      "title": "Post #3",
+      "views": 713
     },
     {
       "id": 4,
@@ -491,24 +491,14 @@
       "views": 703
     },
     {
+      "id": 99,
+      "title": "Post #99",
+      "views": 373
+    },
+    {
       "id": 100,
       "title": "Post #100",
       "views": 497
-    },
-    {
-      "title": "axios Data",
-      "views": 50,
-      "id": 101
-    },
-    {
-      "title": "axios Data",
-      "views": 50,
-      "id": 102
-    },
-    {
-      "title": "axios modify Data",
-      "views": 122,
-      "id": 103
     }
   ]
 }
