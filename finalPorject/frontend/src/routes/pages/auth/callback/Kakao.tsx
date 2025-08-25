@@ -1,17 +1,17 @@
 import { Mail } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import Redirection from "../../../../components/common/Redirection";
 import { axiosInstanse } from "../../../../api/axios";
-import { useDispatch } from "react-redux";
 import { setUserData } from "../../../../features/auth/authSlice";
+import { useAppDispatch } from "../../../../store/authStore";
 
 export default function Kakao() {
     const [searchParams] = useSearchParams(); /* 쿼리스트링 값 가져오는법 */
     const accessToken = searchParams.get("access_token");
     const emailYn = searchParams.get("email");
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const [showForm, setShowForm] = useState(false); // 이메일 정보를 요청받을수 있는 폼을 보여주기위한 상태
     const [email, setEmail] = useState("");
@@ -27,8 +27,8 @@ export default function Kakao() {
             } = await axiosInstanse.patch("/auth/update-email", { email });
             dispatch(
                 setUserData({
-                    _id: user.id,
-                    kakaoId: user.kakoId,
+                    id: user.id,
+                    kakaoId: user.kakaoId,
                     profileImage: user.profileImage,
                     nickname: user.nickname,
                     email: user.email,
@@ -40,11 +40,25 @@ export default function Kakao() {
         }
     };
 
+    const feachAndSaveUser = useCallback(async () => {
+        setError("");
+        try {
+            if (accessToken) sessionStorage.setItem("access_token", accessToken);
+            const { data } = await axiosInstanse.get("/auth/me");
+            dispatch(setUserData(data));
+            navigate("/");
+        } catch (e) {
+            setError(e instanceof Error ? e.message : "unknown Error");
+        }
+    }, [accessToken, dispatch, navigate]);
+
     useEffect(() => {
         if (emailYn === "N") {
             setShowForm(true);
+        } else {
+            feachAndSaveUser();
         }
-    }, [emailYn]);
+    }, [emailYn, feachAndSaveUser]);
     return (
         <>
             <>

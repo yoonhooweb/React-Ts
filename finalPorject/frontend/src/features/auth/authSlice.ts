@@ -1,8 +1,9 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { axiosInstanse } from "../../api/axios";
 
 
 export interface User {
-    _id: string,
+    id: string,
     kakaoId: string,
     profileImage: string
     nickname: string,
@@ -27,10 +28,21 @@ export const authSlice = createSlice({
             state.isLogin = true;            // boolean <- OK
             state.user = action.payload;     // User | null <- User  대입 OK (위에서 타입 제대로 잡았기 때문)
         },
+        /* refresh 토큰을 지우는 유일한 방법은 api 호출해서 거기서 지워야한다. */
+        clearUserData(state) {
+            state.isLogin = false;
+            state.user = null;
+        }
     }
 })
 
+export const logOutThunk = createAsyncThunk("/auth/logout", async (_, { dispatch }) => {
+    await axiosInstanse.post("/auth/logout");
+    sessionStorage.removeItem("access_token");
+    dispatch(authSlice.actions.clearUserData())
+})
+
 export default authSlice.reducer;
-export const { setUserData } = authSlice.actions;
+export const { setUserData, clearUserData } = authSlice.actions;
 
 
