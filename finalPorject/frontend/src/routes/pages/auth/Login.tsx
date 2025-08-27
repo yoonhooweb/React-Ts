@@ -1,9 +1,12 @@
 import { Mail } from "lucide-react";
+import { useNavigate } from "react-router";
 
 export default function Login() {
+    const navigate = useNavigate();
     const handleKaKaoLogin = () => {
         window.location.href = "http://localhost:4000/auth/kakao"; //카카오 로그인 요청
     };
+
     return (
         <div className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4">
             <div className="w-full max-w-md">
@@ -16,7 +19,10 @@ export default function Login() {
 
                     <div className="space-y-4">
                         {/* 이메일 로그인 버튼 */}
-                        <button className="w-full flex items-center justify-center gap-2 bg-white text-slate-900 py-3 rounded-lg hover:bg-gray-100 transition-colors font-medium">
+                        <button
+                            className="w-full flex items-center justify-center gap-2 bg-white text-slate-900 py-3 rounded-lg hover:bg-gray-100 transition-colors font-medium"
+                            onClick={() => navigate("/auth/email-login")}
+                        >
                             <Mail className="w-5 h-5" />
                             Continue with Email
                         </button>
@@ -55,7 +61,10 @@ export default function Login() {
                         </div>
 
                         {/* 회원가입 버튼 */}
-                        <button className="w-full flex items-center justify-center gap-2 bg-slate-700 text-white py-3 rounded-lg hover:bg-slate-600 transition-colors font-medium">
+                        <button
+                            className="w-full flex items-center justify-center gap-2 bg-slate-700 text-white py-3 rounded-lg hover:bg-slate-600 transition-colors font-medium"
+                            onClick={() => navigate("/auth/signup")}
+                        >
                             Create an account
                         </button>
                     </div>
