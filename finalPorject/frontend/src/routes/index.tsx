@@ -10,13 +10,17 @@ import Kakao from "./pages/auth/callback/Kakao";
 import Signup from "./pages/auth/Signup";
 import EmailLogin from "./pages/auth/EmailLogin";
 import { redirectIfAuth, requireAuth, useFetchUserData } from "./loader/auth.loader";
+import { fetchOverView, fetchPostsDetail } from "./loader/post.loader";
+import ErrorState from "../components/common/ErrorState";
 
 const router = createBrowserRouter([
     {
         Component: Default,
+        errorElement: <ErrorState />,
         children: [
             {
                 path: "",
+                loader: fetchOverView,
                 Component: Home,
             },
             {
@@ -36,6 +40,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "/post/:id",
+                loader: fetchPostsDetail,
                 Component: PostRead,
             },
             {

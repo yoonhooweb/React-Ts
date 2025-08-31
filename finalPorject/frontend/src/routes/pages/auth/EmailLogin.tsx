@@ -39,7 +39,6 @@ export default function EmailLogin() {
                 email: user.email,
             };
 
-            console.log(accessToken);
             sessionStorage.setItem("access_token", accessToken);
             dispatch(setUserData(userData));
 

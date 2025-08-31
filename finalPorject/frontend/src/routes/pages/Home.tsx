@@ -1,23 +1,27 @@
+import { useLoaderData } from "react-router";
 import AdBanner from "../../components/common/AdBanner";
 import FeaturedPost from "../../components/post/FeaturedPost";
 import PostGrid from "../../components/post/PostGrid";
 
 export default function Home() {
-  return (
-    <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
-      <FeaturedPost />
+    console.log(useLoaderData());
+    const { latestPosts, popularPosts, randomPost }: { randomPost: Post; popularPosts: Post[]; latestPosts: Post[] } = useLoaderData();
 
-      <div className="mt-8">
-        <AdBanner />
-      </div>
+    return (
+        <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
+            {randomPost && <FeaturedPost randomPost={randomPost} />}
 
-      <PostGrid />
+            <div className="mt-8">
+                <AdBanner />
+            </div>
 
-      <div className="mt-8">
-        <AdBanner />
-      </div>
+            <PostGrid title="Latest Post" posts={latestPosts} />
 
-      <PostGrid />
-    </div>
-  );
+            <div className="mt-8">
+                <AdBanner />
+            </div>
+
+            <PostGrid title="popular Post" posts={popularPosts} />
+        </div>
+    );
 }
