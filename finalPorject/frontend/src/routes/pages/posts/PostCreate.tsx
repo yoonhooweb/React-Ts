@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ImagePlus, Loader2 } from "lucide-react";
-import { useState, useTransition } from "react";
-import { useNavigate } from "react-router";
+import { useEffect, useState, useTransition } from "react";
+import { useLoaderData, useNavigate } from "react-router";
 import { axiosInstanse } from "../../../api/axios";
 
 const categories = ["", "Technology", "Lifestyle", "Travel", "Business", "Economy", "Sports"];
@@ -13,6 +13,7 @@ type FormStateType = {
 };
 export default function PostCreate() {
     const navigate = useNavigate();
+    const post: Post = useLoaderData();
     const [formState, setFormState] = useState<FormStateType>({
         title: "",
         category: "",
@@ -51,8 +52,8 @@ export default function PostCreate() {
         }));
     };
 
-    const handleFormAction = async () => {
-        console.log(formState);
+    const handleFormAction = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         startTransition(async () => {
             try {
                 /* 폼 유효성 검사 */
@@ -74,9 +75,9 @@ export default function PostCreate() {
                     setErrorState(newError);
                 }
 
-                let thumbnail = "";
+                let thumbnail = post?.thumbnail || "";
 
-                if (previewImgage) {
+                if (previewImgage !== thumbnail) {
                     const formData = new FormData();
                     formData.append("file", previewImgage);
                     formData.append("upload_preset", "react_blog");
@@ -87,16 +88,29 @@ export default function PostCreate() {
                     console.log(formData);
                 }
 
-                const { status } = await axiosInstanse.post("/posts", {
-                    title: formState.title,
-                    category: formState.category,
-                    thumbnail: thumbnail,
-                    content: formState.content,
-                });
+                if (post) {
+                    const { status } = await axiosInstanse.put(`/posts/${post._id}`, {
+                        title: formState.title,
+                        category: formState.category,
+                        thumbnail: thumbnail,
+                        content: formState.content,
+                    });
+                    if (status === 200) {
+                        alert("수정 성공");
+                        navigate(`/post/${post._id}`);
+                    }
+                } else {
+                    const { status } = await axiosInstanse.post("/posts", {
+                        title: formState.title,
+                        category: formState.category,
+                        thumbnail: thumbnail,
+                        content: formState.content,
+                    });
 
-                if (status === 201) {
-                    return alert("등록 성공");
-                    navigate("/");
+                    if (status === 201) {
+                        alert("등록 성공");
+                        navigate("/");
+                    }
                 }
             } catch (e) {
                 console.error(e instanceof Error ? e.message : "unknown error");
@@ -135,11 +149,24 @@ export default function PostCreate() {
         reader.readAsDataURL(selectedFile);
     };
 
+    /* 수정 페이지랑 같이쓰기 */
+    useEffect(() => {
+        if (post) {
+            setFormState({
+                title: post.title,
+                category: post.category,
+                thumbnail: post.thumbnail,
+                content: post.content,
+            });
+            setPreviewImage(post.thumbnail);
+        }
+    }, [post]);
+
     return (
         <div className="max-w-4xl mx-auto px-4 md:px-8 py-8">
-            <h1 className="text-3xl font-bold text-white mb-8">Write New Post</h1>
+            <h1 className="text-3xl font-bold text-white mb-8">Write {post ? "modify" : "new"} Post</h1>
 
-            <form action={handleFormAction} className="space-y-6">
+            <form onSubmit={handleFormAction} className="space-y-6">
                 <div>
                     <label htmlFor="title" className="block text-sm font-medium text-gray-300 mb-2">
                         Title
@@ -226,7 +253,7 @@ export default function PostCreate() {
                         className="px-6 py-2.5 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors disabled:bg-gray-400"
                         disabled={isPending}
                     >
-                        {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : "Publish Post"}
+                        {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : post ? "Modify Post" : "Publish Post"}
                     </button>
                     <button
                         type="button"

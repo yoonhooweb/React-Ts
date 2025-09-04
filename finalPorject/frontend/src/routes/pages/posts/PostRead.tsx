@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useOptimistic, useState } from "react";
 import { CalendarDays, Trash2, Pencil, Eye } from "lucide-react";
 import AdBanner from "../../../components/common/AdBanner";
 import PostGrid from "../../../components/post/PostGrid";
@@ -7,11 +7,20 @@ import CommentComponent from "../../../components/comment/CommentComponent";
 import { useLoaderData, useNavigate } from "react-router";
 import { format } from "date-fns";
 import { useAppSelector } from "../../../store/authStore";
+import { axiosInstanse } from "../../../api/axios";
 
 export default function PostRead() {
     const navigator = useNavigate();
     const { post, relatedPosts }: { post: Post; relatedPosts: Post[] } = useLoaderData();
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+    const [comments, setComments] = useState<Comment[]>(post.comments);
+    /* 댓글리스트 뿌리기 위한 훅 
+        comment : 현재 상태값
+        value : 낙관적 상태에서 전달한 매개변수
+    */
+
+    const [optimisticComments, addOptimisticComments] = useOptimistic<Comment[], Comment>(comments, (comment, value) => [...comment, value]);
 
     const user = useAppSelector((state) => state.kakaoAuth.user);
 
@@ -24,6 +33,29 @@ export default function PostRead() {
             </div>
         );
     }
+
+    const handleDelete = async () => {
+        try {
+            await axiosInstanse.delete(`/posts/${post._id}`);
+            navigator("/");
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    const handleDeleteComment = async (commentId: string) => {
+        if (confirm("삭제하시겠습니까?")) {
+            try {
+                await axiosInstanse.delete(`/posts/${post._id}/comments/${commentId}`);
+                setComments((comments) => comments.filter((comment) => comment._id !== commentId));
+            } catch (e) {
+                console.error(e);
+            }
+        } else {
+            return;
+        }
+    };
+
     return (
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
             <div className="max-w-4xl mx-auto">
@@ -89,7 +121,7 @@ export default function PostRead() {
                                     Cancel
                                 </button>
                                 <button
-                                    onClick={() => setShowDeleteConfirm(false)}
+                                    onClick={handleDelete}
                                     className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
                                 >
                                     Delete
@@ -103,10 +135,13 @@ export default function PostRead() {
                 <div className="border-t border-slate-700 pt-8 mt-8">
                     <h2 className="text-2xl font-bold text-white mb-8">Comments</h2>
 
-                    <CommentForm />
+                    <CommentForm addOptimisticComments={addOptimisticComments} setComments={setComments} />
 
                     <div className="mt-8 space-y-6">
-                        <CommentComponent />
+                        {optimisticComments &&
+                            optimisticComments.map((comment) => (
+                                <CommentComponent key={comment._id} {...comment} handleDeleteComment={handleDeleteComment} />
+                            ))}
                     </div>
                 </div>
 

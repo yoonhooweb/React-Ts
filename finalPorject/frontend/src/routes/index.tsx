@@ -10,7 +10,7 @@ import Kakao from "./pages/auth/callback/Kakao";
 import Signup from "./pages/auth/Signup";
 import EmailLogin from "./pages/auth/EmailLogin";
 import { redirectIfAuth, requireAuth, useFetchUserData } from "./loader/auth.loader";
-import { fetchOverView, fetchPostsDetail } from "./loader/post.loader";
+import { fetchOverView, fetchPostModify, fetchPosts, fetchPostsDetail } from "./loader/post.loader";
 import ErrorState from "../components/common/ErrorState";
 
 const router = createBrowserRouter([
@@ -26,6 +26,7 @@ const router = createBrowserRouter([
             {
                 path: "/posts",
                 Component: Posts,
+                loader: fetchPosts,
             },
             {
                 path: "/create-post",
@@ -36,7 +37,7 @@ const router = createBrowserRouter([
             {
                 path: "/edit/:id",
                 Component: PostCreate,
-                loader: requireAuth,
+                loader: fetchPostModify,
             },
             {
                 path: "/post/:id",

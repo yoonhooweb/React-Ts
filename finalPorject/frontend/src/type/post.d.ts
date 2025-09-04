@@ -3,14 +3,23 @@ interface Author {
     profileImage: string;
     nickname: string;
 }
-interface Post {
-    "_id": string;
-    "title": string;
-    "category": string;
-    "thumbnail": string;
-    "content": string;
-    "author": Author,
-    "comments": [],
-    "viewCount": number,
-    "createdAt": string
+
+interface Comment {
+    author: Author,
+    content: string;
+    _id: string;
+    createdAt: string;
 }
+
+interface Post {
+    _id: string;
+    title: string;
+    category: string;
+    thumbnail: string;
+    content: string;
+    author: Author,
+    comments: [],
+    viewCount: number,
+    createdAt: string
+}
+

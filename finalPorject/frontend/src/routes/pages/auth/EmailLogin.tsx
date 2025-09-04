@@ -22,7 +22,7 @@ export default function EmailLogin() {
             }
             if (password.length > 6) {
                 setError("비밀번호가 6글자보다 짧습니다.");
-                return;
+                return; 
             }
 
             const {

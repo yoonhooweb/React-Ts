@@ -5,7 +5,7 @@ import { axiosInstanse } from "../../api/axios";
 export interface User {
     id: string,
     kakaoId: string,
-    profileImage: string
+    profileImage?: string
     nickname: string,
     email?: string
 }
