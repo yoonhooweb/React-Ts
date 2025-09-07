@@ -4,7 +4,6 @@ import FeaturedPost from "../../components/post/FeaturedPost";
 import PostGrid from "../../components/post/PostGrid";
 
 export default function Home() {
-    console.log(useLoaderData());
     const { latestPosts, popularPosts, randomPost }: { randomPost: Post; popularPosts: Post[]; latestPosts: Post[] } = useLoaderData();
 
     return (
@@ -15,13 +14,13 @@ export default function Home() {
                 <AdBanner />
             </div>
 
-            <PostGrid title="Latest Post" posts={latestPosts} />
+            <PostGrid title="Latest Post" posts={latestPosts} viewAllPosts={"/posts"} />
 
             <div className="mt-8">
                 <AdBanner />
             </div>
 
-            <PostGrid title="popular Post" posts={popularPosts} />
+            <PostGrid title="popular Post" posts={popularPosts} viewAllPosts={"/posts?sort=views"} />
         </div>
     );
 }

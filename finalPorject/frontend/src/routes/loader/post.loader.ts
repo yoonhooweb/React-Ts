@@ -37,20 +37,25 @@ export const fetchPostModify = async ({ params }: LoaderFunctionArgs) => {
 
 /* querystring 가지고오기 위해 request 사용한다. */
 export const fetchPosts = async ({ request }: LoaderFunctionArgs) => {
+
     try {
         let query = "";
         const url = new URL(request.url);
         const sort = url.searchParams.get("sort") ?? "newset" // views
-        const category = url.searchParams.get("category");
-        const page = url.searchParams.get("page") ?? ""
-        const search = url.searchParams.get("search") ?? ""
+        const category = url.searchParams.get("category") ?? "";;
+        const page = url.searchParams.get("page") ?? "1"; 
+        const search = url.searchParams.get("search") ?? "";
 
-        if (sort !== "") {
-            return query = query + `sort=${sort}`
-        }
+        if (sort !== "") query += `sort=${sort}`;
+        if (category !== "") query += `&category=${category}`;
+        if (page !== "") query += `&page=${page}`;
+        if (search !== "") query += `&search=${search}`;
+
+        const { data } = await axiosInstanse.get(`/posts?${query}`);
+        return data;
+
     } catch (e) {
         console.error(e instanceof Error ? e.message : " error")
     }
-
 }
 

@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { CalendarDays } from "lucide-react";
+import { CalendarDays, Eye } from "lucide-react";
 import { Link } from "react-router";
 
 export default function PostCard({ post }: { post: Post }) {
@@ -22,6 +22,10 @@ export default function PostCard({ post }: { post: Post }) {
                 <div className="flex items-center">
                     <img alt={post.author.nickname} className="w-6 h-6 rounded-full mr-2" src={post.author.profileImage} />
                     <span className="text-gray-300 text-sm mr-3">{post.author.nickname}</span>
+                    <div className="flex items-center text-xs text-gray-400 mr-4">
+                        <Eye className="h-3 w-3 mr-1" aria-hidden="true" />
+                        <span>{post.viewCount}</span>
+                    </div>
                     <div className="flex items-center text-xs text-gray-400">
                         <CalendarDays className="h-3 w-3 mr-1" aria-hidden="true" />
                         <span>{format(new Date(post.createdAt), "yyyy-mm-dd HH:mm")}</span>
