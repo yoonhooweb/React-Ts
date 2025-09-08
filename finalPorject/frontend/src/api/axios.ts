@@ -35,8 +35,6 @@ axiosInstanse.interceptors.response.use(
     async (error) => {
         const originalRequest = error.config;
 
-        console.log(error);
-
         if (error.response && error.response.status === 401 && !retry) {
             retry = true;
             try {
